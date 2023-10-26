@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Report</title>
+</head>
+<body>
+    <h1>Task Report</h1>
+    <div id="taskList"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var taskListElement = document.getElementById('taskList');
+            
+            var xhr = new XMLHttpRequest();
+            xhr.open('GET', '/api/tasks', true);
+            xhr.onload = function() {
+                if (xhr.status === 200) {
+                    var tasks = JSON.parse(xhr.responseText);
+                    var taskHTML = '<ul>';
+                    tasks.forEach(function(task) {
+                        taskHTML += '<li>' + task.name + ' - ' + task.category + ' - ' + (task.status ? 'Completed' : 'Not Completed') + '</li>';
+                    });
+                    taskHTML += '</ul>';
+                    taskListElement.innerHTML = taskHTML;
+                }
+            };
+            xhr.send();
+        });
+    </script>
+</body>
+</html>
